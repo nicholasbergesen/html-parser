@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-namespace HtmlParser
+﻿namespace HtmlParser
 {
     public class Parser
     {
@@ -44,20 +42,28 @@ namespace HtmlParser
                     continue;
                 }
 
+                //skip if '<' is at the very end of the document
+                if (pos + 1 >= html.Length)
+                {
+                    pos++;
+                    continue;
+                }
+
                 //skip over comments in the document
                 if (html[pos + 1] == '!')
                 {
-                    bool isDoctype = html[(pos + 2)..(pos + 9)].Equals("DOCTYPE", StringComparison.InvariantCultureIgnoreCase);
+                    bool isDoctype = pos + 9 <= html.Length
+                        && html[(pos + 2)..(pos + 9)].Equals("DOCTYPE", StringComparison.InvariantCultureIgnoreCase);
 
                     if (isDoctype)
                     {
                         pos += 9;//skip ahead doctype chars.
-                        while (html[++pos] != '>') ;
+                        while (++pos < html.Length && html[pos] != '>') ;
                         pos++;
                     }
                     else //if not doctype then assume is comment
                     {
-                        while (!(html[pos] == '-' && html[pos + 1] == '-' && html[pos + 2] == '>'))
+                        while (pos + 2 < html.Length && !(html[pos] == '-' && html[pos + 1] == '-' && html[pos + 2] == '>'))
                         {
                             pos++;
                         }
@@ -67,7 +73,7 @@ namespace HtmlParser
                 }
                 else if (html[pos + 1] == '?')
                 {
-                    while (!(html[++pos] == '?' && html[pos + 1] == '>')) ;
+                    while (pos + 1 < html.Length && !(html[++pos] == '?' && html[pos + 1] == '>')) ;
 
                     pos += 2;
                     continue;
@@ -75,7 +81,7 @@ namespace HtmlParser
 
                 bool isCloseTag = html[pos + 1] == '/';
                 var closeChevronPos = pos;
-                while (html[++closeChevronPos] != '>')
+                while (++closeChevronPos < html.Length && html[closeChevronPos] != '>')
                 {
                     char c = html[closeChevronPos];
 
@@ -117,6 +123,10 @@ namespace HtmlParser
                         }
                     }
                 }
+                //if we ran past the end of the document, stop parsing
+                if (closeChevronPos >= html.Length)
+                    break;
+
                 var isSelfClosing = html[closeChevronPos - 1] == '/';
 
                 var tagNameStartPos = isCloseTag ? pos + 2 : pos + 1;
@@ -136,7 +146,7 @@ namespace HtmlParser
                     var closeTag = $"</{node.Name}>";
                     int closeTagCounter = 0;
                     int closeTagPos = closeChevronPos;
-                    //this loop caters for nested skip tags. e.g <sciprt><script></script></script>
+                    //this loop caters for nested skip tags. e.g <script><script></script></script>
                     while (closeTagCounter < 1)
                     {
                         closeTagPos++;
@@ -144,9 +154,9 @@ namespace HtmlParser
                         if (closeTagPos > (html.Length - closeTag.Length))
                             throw new Exception($"Unable to find close tag for {node.Name} at char position {pos}");
 
-                        if (html[closeTagPos..(openTag.Length + closeTagPos)] == openTag)
+                        if (html.AsSpan(closeTagPos, openTag.Length).Equals(openTag, StringComparison.OrdinalIgnoreCase))
                             closeTagCounter--;
-                        else if (html[closeTagPos..(closeTag.Length + closeTagPos)] == closeTag)
+                        else if (html.AsSpan(closeTagPos, closeTag.Length).Equals(closeTag, StringComparison.OrdinalIgnoreCase))
                             closeTagCounter++;
                     }
 
