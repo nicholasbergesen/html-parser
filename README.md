@@ -152,11 +152,14 @@ See [LICENSE](LICENSE) for details.
 
 ## Changelog
 
-### v1.0.9
+### v1.0.10
 - Bugfix: Improved bounds checking to prevent crashes on malformed HTML (unterminated comments, unclosed tags, lone chevrons).
 - Bugfix: Fixed handling of unterminated DOCTYPE and XML processing instructions.
 - Upgrade to .NET 10.
 - Increased test coverage for edge cases.
+
+### v1.0.9
+- Skipped, so version 10 matches .net 10
 
 ### v1.0.8
 - Bugfix: Handle attributes that contain tags, including malformed attributes.

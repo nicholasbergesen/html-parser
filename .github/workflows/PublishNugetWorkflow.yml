@@ -20,7 +20,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 10.0.x
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
@@ -28,7 +28,7 @@ jobs:
     - name: Test
       run: dotnet test --no-restore --verbosity normal
     - name: Publish
-      run: dotnet pack -c Release --version-suffix ${{ github.event.inputs.version }}
+      run: dotnet pack -c Release -p:PackageVersion=${{ github.event.inputs.version }}
     - name: Push to Nuget
       run: dotnet nuget push ./Nick.HtmlParser/bin/Release/Nick.HtmlParser.${{ github.event.inputs.version }}.nupkg --api-key ${{ secrets.NUGETAPIKEY }} -s https://api.nuget.org/v3/index.json
     - name: Create Github Release

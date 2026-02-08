@@ -3,11 +3,12 @@
 	<PropertyGroup>
 		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Version>1.0.9</Version>
+		<Version>1.0.10</Version>
 		<Nullable>enable</Nullable>
 		<PackageId>Nick.HtmlParser</PackageId>
 		<Authors>Nicholas Bergesen</Authors>
 		<Company>Nicholas Bergesen</Company>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageReleaseNotes>
 			- Bugfix: Improved bounds checking to prevent crashes on malformed HTML (unterminated comments, unclosed tags, lone chevrons).
 			- Bugfix: Fixed handling of unterminated DOCTYPE and XML processing instructions.
@@ -18,7 +19,7 @@
 		<Description>
 			Parses Html into a typed IEnumerable flat structure.
 
-			v1.0.9 changes:
+			v1.0.10 changes:
 			- Bugfix: Improved bounds checking to prevent crashes on malformed HTML (unterminated comments, unclosed tags, lone chevrons).
 			- Bugfix: Fixed handling of unterminated DOCTYPE and XML processing instructions.
 			- Upgrade to .net10.0.
@@ -51,6 +52,10 @@
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
 			<_Parameter1>Test</_Parameter1>
 		</AssemblyAttribute>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 </Project>
