@@ -3,23 +3,26 @@
 	<PropertyGroup>
 		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Version>1.0.8</Version>
+		<Version>1.0.9</Version>
 		<Nullable>enable</Nullable>
 		<PackageId>Nick.HtmlParser</PackageId>
 		<Authors>Nicholas Bergesen</Authors>
 		<Company>Nicholas Bergesen</Company>
 		<PackageReleaseNotes>
-			- Reference parent and child nodes from INode.
-			- Cater for non standard html tags.
-			- Ignore xml.
-			- Improve parsing recovery when parsing a malformed html document. i.e closing tag without an opening tag or visa versa.
-			- Ignores stript and style tags.
-			- Bugfix: Ignore for nested script tags.
-			- Load raw node text into parsed INode objects. (Will consume more memory).
+			- Bugfix: Improved bounds checking to prevent crashes on malformed HTML (unterminated comments, unclosed tags, lone chevrons).
+			- Bugfix: Fixed handling of unterminated DOCTYPE and XML processing instructions.
+			- Upgrade to .net10.0.
+			- Increased test coverage for edge cases.
 		</PackageReleaseNotes>
 		<PackageTags>html parser, parse, html,flat structure, flatten html</PackageTags>
 		<Description>
 			Parses Html into a typed IEnumerable flat structure.
+
+			v1.0.9 changes:
+			- Bugfix: Improved bounds checking to prevent crashes on malformed HTML (unterminated comments, unclosed tags, lone chevrons).
+			- Bugfix: Fixed handling of unterminated DOCTYPE and XML processing instructions.
+			- Upgrade to .net10.0.
+			- Increased test coverage for edge cases.
 
 			v1.0.8 changes:
 			- Bugfix: Handle attributes that contain tags, including malformed attributes
@@ -29,7 +32,7 @@
 			- Reference parent and child nodes from INode.
 
 			v1.0.6 changes:
-			- Ignores stript and style tags.
+			- Ignores script and style tags.
 			- Bugfix: Ignore for nested script tags.
 
 			v1.0.4 changes:
